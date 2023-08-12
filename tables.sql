@@ -1,52 +1,55 @@
-clear screen;
+-- Clear the screen (SQL*Plus command)
+CLEAR SCREEN;
 
---delete existing table
-drop table vaccine_record cascade constraints;
-drop table vaccine_center cascade constraints;
-drop table users cascade constraints;
+-- Delete existing tables
+DROP TABLE vaccine_record CASCADE CONSTRAINTS;
+DROP TABLE vaccine_center CASCADE CONSTRAINTS;
+DROP TABLE users_frg1 CASCADE CONSTRAINTS;
+DROP TABLE users_frg2 CASCADE CONSTRAINTS;
 
---Create vaccine, vaccine_record
-
-create table vaccine_record(
-vid NUMBER,
-brand varchar2(30),
-cnt integer,
-        PRIMARY KEY (vid)
+-- Create vaccine_record and vaccine_center tables
+CREATE TABLE vaccine_record (
+    vid NUMBER,
+    brand VARCHAR2(30),
+    cnt INTEGER,
+    PRIMARY KEY (vid)
 );
 
-create table vaccine_center(
-cid     integer, 
-city   varchar2(30), 
-cname varchar2(30),
-        PRIMARY KEY (cid)
+CREATE TABLE vaccine_center (
+    cid INTEGER,
+    city VARCHAR2(30),
+    cname VARCHAR2(30),
+    PRIMARY KEY (cid)
 );
 
-create table users(
-nid varchar2(30), 
-name varchar2(30), 
-city varchar2(30),
-vid integer null,
-cid integer null,
-mob integer,
-        PRIMARY KEY (nid)
-		--FOREIGN KEY(cid) REFERENCES vaccine_center(cid), 
-		--FOREIGN KEY(vid) REFERENCES vaccine_record(vid)
+-- Create users_frg1 and users_frg2 tables
+CREATE TABLE users_frg1 (
+    nid VARCHAR2(30),
+    name VARCHAR2(30),
+    city VARCHAR2(30),
+    mob INTEGER,
+    birth_date DATE,
+    PRIMARY KEY (nid)
 );
 
------insert into vaccine_center----------
-INSERT into vaccine_center values(1,'Dhaka', 'Mohanagar Institute');
-INSERT into vaccine_center values(2,'Dhaka', 'Jahangir Institute');
-INSERT into vaccine_center values(3,'Dhaka', 'Popular Diagnostics');
+CREATE TABLE users_frg2 (
+    nid VARCHAR2(30),
+    vid INTEGER NULL,
+    cid INTEGER NULL
+);
 
-INSERT into vaccine_center values(4,'Sylhet', 'Sylhet Institute1');
-INSERT into vaccine_center values(5,'Sylhet', 'Sylhet Institute2');
-INSERT into vaccine_center values(6,'Sylhet', 'Sylhet Institute3');
+-- Insert data into vaccine_center table
+INSERT INTO vaccine_center VALUES (1, 'Dhaka', 'Mohanagar Institute');
+INSERT INTO vaccine_center VALUES (2, 'Dhaka', 'Jahangir Institute');
+INSERT INTO vaccine_center VALUES (3, 'Dhaka', 'Popular Diagnostics');
+INSERT INTO vaccine_center VALUES (4, 'Sylhet', 'Sylhet Institute1');
+INSERT INTO vaccine_center VALUES (5, 'Sylhet', 'Sylhet Institute2');
+INSERT INTO vaccine_center VALUES (6, 'Sylhet', 'Sylhet Institute3');
 
+-- Insert data into vaccine_record table
+INSERT INTO vaccine_record VALUES (1, 'AstraZeneca', 100);
+INSERT INTO vaccine_record VALUES (2, 'Pfizer', 100);
+INSERT INTO vaccine_record VALUES (3, 'Sputnik V', 100);
 
------insert into vaccine_record----------
-INSERT into vaccine_record values(1, 'AstraZeneca',100);
-INSERT into vaccine_record values(2, 'Pfizer',100);
-INSERT into vaccine_record values(3, 'Sputnik V',100);
-
-commit;
-
+-- Commit the changes
+COMMIT;

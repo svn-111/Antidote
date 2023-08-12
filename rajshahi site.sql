@@ -3,12 +3,12 @@ SET SERVEROUTPUT ON;
 SET VERIFY OFF;
 
 CREATE OR REPLACE PACKAGE user_registration_pkg AS
-  PROCEDURE register_user(name IN users.name%TYPE, nid IN users.nid%TYPE, vid IN vaccine_record.vid%TYPE,phn IN users.mob%TYPE,brd IN users.birth_date%TYPE);
+  PROCEDURE register_user(name IN users.name%TYPE, nid IN users.nid%TYPE, vid IN vaccine_record.vid%TYPE,phn IN users.mob%TYPE);
 END;
 /
 
 CREATE OR REPLACE PACKAGE BODY user_registration_pkg AS
-  PROCEDURE register_user(name IN users.name%TYPE, nid IN users.nid%TYPE, vid IN vaccine_record.vid%TYPE,phn IN users.mob%TYPE,brd IN users.birth_date%TYPE) IS
+  PROCEDURE register_user(name IN users.name%TYPE, nid IN users.nid%TYPE, vid IN vaccine_record.vid%TYPE,phn IN users.mob%TYPE) IS
     random_center_no NUMBER;
     cnt INTEGER;
 	X INTEGER := vid;
@@ -19,7 +19,7 @@ CREATE OR REPLACE PACKAGE BODY user_registration_pkg AS
 
     UPDATE vaccine_record SET cnt = cnt - 1 WHERE vid = X;
 
-    INSERT INTO users VALUES (nid, name, 'Dhaka',vid, random_center_no,phn,brd);
+    INSERT INTO users VALUES (nid, name, 'Rajshahi',vid, random_center_no,phn);
 
     EXCEPTION 
       WHEN DUP_VAL_ON_INDEX THEN
@@ -44,7 +44,6 @@ END;
 ACCEPT NAME CHAR PROMPT "Enter your name = "
 ACCEPT NID CHAR PROMPT "NID = "
 ACCEPT PHN NUMBER PROMPT "Phone = "
-ACCEPT BRD CHAR PROMPT "Birth_Date(YYYY-MM-DD) = "
 ACCEPT VID NUMBER PROMPT "Vaccine ID = "
 
 DECLARE
@@ -52,14 +51,12 @@ DECLARE
   nid users.nid%TYPE;
   vid vaccine_record.vid%TYPE;
   phn users.mob%TYPE;
-  brd users.birth_date%TYPE;
   
 BEGIN
   name := '&NAME';
   nid := '&NID';
   phn := &phn;
-  brd :=TO_DATE('&brd','YYYY-MM-DD');
   vid := &VID;
-  user_registration_pkg.register_user(name, nid, vid, phn,brd);
+  user_registration_pkg.register_user(name, nid, vid, phn);
 END;
 /
