@@ -82,3 +82,4 @@ EXCEPTION
     ROLLBACK; -- Rollback changes if an error occurs
 END;
 /
+commit;
